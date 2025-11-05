@@ -63,6 +63,26 @@ class MainActivity : AppCompatActivity() {
                 // Mostrar en UI
                 runOnUiThread {
                     tvResponse.text = response
+
+                    //Posicion de la etiqueta de apertura de title
+                    val inicio = response.indexOf("<title>") + "<title>".length
+
+                    //Posicion de la etiqueta de cierre de title
+                    val fin = response.indexOf("</title>")
+
+                    /*
+                    Creo una variable, si las indexOf no devuelven -1 siginifica que se ha encontrado,
+                    por lo que se guarda el titulo con substring, si no el mensaje dice que no se ha encontrado
+                    */
+                    var titulo = ""
+                    if (inicio != -1 && fin != -1) {
+                        titulo = response.substring(inicio, fin)
+                    } else {
+                        titulo = "No se ha encontrado etiqueta <title>"
+                    }
+
+                    //Cambio el texto haciendo que se muestre el titulo ya separado de <title> y el mensaje original
+                    tvResponse.text = "TÍTULO: ${titulo}\n\n\n\n RESPUESTA DE LA PÁGINA:\n\n" + tvResponse.text.toString()
                 }
             } catch (e: Exception) {
                 runOnUiThread {
