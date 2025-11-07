@@ -59,16 +59,25 @@ class MainActivity : AppCompatActivity() {
         Thread {
             try {
                 val client = SocketClient()
+
+                //Guardo el tiempo actual antes de hacer la peticion
+                val inicio = System.currentTimeMillis()
+
                 val response = client.execute(req)
+
+                //Guardo el tiempo actual despues de hacer la peticion
+                val fin = System.currentTimeMillis()
+
+                //Calculo el tiempo que ha tardado restando el tiempo inicial al final
+                val tiempoRespuesta = fin - inicio
+
+
                 // Mostrar en UI
                 runOnUiThread {
                     tvResponse.text = response
 
-                    //Extraigo la priemra linea de la respuesta con las funciones first() y lineSequence()
-                    val lineaCodigo = response.lineSequence().first()
-
                     //Cambio el texto haciendo que se muestre el codigo que es la primera linea y el mensaje original
-                    tvResponse.text = "Código de estado: ${lineaCodigo}\n\n\n\n RESPUESTA DE LA PÁGINA:\n\n" + tvResponse.text.toString()
+                    tvResponse.text = "Tiempo de latencia ${tiempoRespuesta}\n\n\n\n RESPUESTA DE LA PÁGINA:\n\n" + tvResponse.text.toString()
                 }
             } catch (e: Exception) {
                 runOnUiThread {
